@@ -8,7 +8,6 @@
 #define ACTIVE_FREQ_MHZ 16
 
 #define REQUIRED_TIME_MS 200 
-
 #define REQUIRED_TICKS  REQUIRED_TIME_MS*ACTIVE_FREQ_MHZ*1000
 
 int main(){
@@ -18,8 +17,6 @@ int main(){
 	
 	Port_Init(&Port_Cfg);
 	Gpt_Init(&Gpt_Cfg);
-	
-	
 	
 	Gpt_StartTimer(TIMER0_16_32, REQUIRED_TICKS);
 	
