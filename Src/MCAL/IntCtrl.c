@@ -53,11 +53,15 @@
 *******************************************************************************/
 void IntCtrl_init(void)
 {
-	u8 locGroup,locSubGroup,intField;
+	u8 locGroup,locSubGroup,intField,i;
 	
+	// Set the VECTKEY
+	// Choose Priority grouping option
 	APINT = (APINT_VECTKEY<<NVIC_VECTKEY) | (NVIC_GROUPING_OPTION<<NVIC_PRIGROUP);
 	
-	for(u8 i = 0; i<NVIC_ACTIVE_INT_NUM; i++){
+	for(i = 0; i<NVIC_ACTIVE_INT_NUM; i++){
+		// Loop on all active interrupts
+		// Set the choosen bit according to its number
 		if(Nvic_Cfg[i].interruptNumber < 32) {
 			SET_BIT(NVIC_EN0, (Nvic_Cfg[i].interruptNumber)%32 );
 		}
@@ -77,6 +81,7 @@ void IntCtrl_init(void)
 	locGroup = Nvic_Cfg[i].groupPriority;
 	locSubGroup = Nvic_Cfg[i].subgroupPriority;
 	
+	// Construct the 3 bits group-subgroup combination
 #if (NVIC_GROUPING_OPTION == NVIC_GROUPING_OPTION_XXX)
 	    intField = locGroup;
 #elif (NVIC_GROUPING_OPTION == NVIC_GROUPING_OPTION_XXY) 
@@ -87,10 +92,13 @@ void IntCtrl_init(void)
         intField = locSubGroup;
 #endif
 
+		// Get the address of the register according to the choosen int number
 		u32 regAddress = NVIC_BASE_ADDRESS + 0x400 + ((Nvic_Cfg[i].interruptNumber) / 4)*0x004;
 		
+		// Get the bit offset inside the register
 		u32 bitOffset = ((Nvic_Cfg[i].interruptNumber)%4) * 3 + 5 * (((Nvic_Cfg[i].interruptNumber)%4) + 1);
 		
+		// Write the combination value in the calculated position
 		*((volatile u32 *)(regAddress)) = intField<<bitOffset;
 	
 	

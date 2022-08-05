@@ -99,7 +99,9 @@ Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId)
 		
 		case 0:{
 			locData = *((volatile u32*)(GPIO_PORTA_GPIODATA_ADDRESS));
+			// Read from Data register
 			locData = locData >> locPin;
+			// Shift the bit to the least bit
 			break;
 		} 
 		case 1:{
@@ -129,7 +131,8 @@ Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId)
 		}
 	}
 		
-	return locData;
+	return (locData&0x01);
+	// Return the least bit
 }
 
 
@@ -157,6 +160,7 @@ void Dio_WriteChannel(Dio_ChannelType ChannelId, Dio_LevelType Level)
 		
 		case 0:{
 			*((volatile u32*)(GPIO_PORTA_GPIODATA_ADDRESS)) = (Level<<locPin);
+			// Write to the data register with the value shifted by the num of the pin
 			break;
 		} 
 		case 1:{
@@ -196,7 +200,7 @@ void Dio_WriteChannel(Dio_ChannelType ChannelId, Dio_LevelType Level)
 Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId)
 {
 	u32 locData, maskAddress;
-	
+/*	
 	maskAddress = 0xFF << 2;
 
 	switch(PortId){
@@ -226,8 +230,38 @@ Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId)
 			break;
 		}
 	}
-	
-	return locData;
+*/
+
+	switch(PortId){
+		
+		case 0:{
+			locData = *((volatile u32*)(GPIO_PORTA_GPIODATA_ADDRESS));
+			// Read the data register 
+			break;
+		} 
+		case 1:{
+			locData = *((volatile u32*)(GPIO_PORTB_GPIODATA_ADDRESS));
+			break;
+		}
+		case 2:{
+			locData = *((volatile u32*)(GPIO_PORTC_GPIODATA_ADDRESS));
+			break;
+		}
+		case 3:{
+			locData = *((volatile u32*)(GPIO_PORTD_GPIODATA_ADDRESS));
+			break;
+		}
+		case 4:{
+			locData = *((volatile u32*)(GPIO_PORTE_GPIODATA_ADDRESS));
+			break;
+		}
+		case 5:{
+			locData = *((volatile u32*)(GPIO_PORTF_GPIODATA_ADDRESS));
+			break;
+		}
+	}	
+	return locData;	
+	// Return the data
 }
 
 /******************************************************************************
@@ -244,7 +278,7 @@ Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId)
 void Dio_WritePort(Dio_PortType PortId, Dio_PortLevelType Level)
 {
 	u32 maskAddress;
-	
+/*	
 	maskAddress = 0xFF << 2;
 
 	switch(PortId){
@@ -274,7 +308,36 @@ void Dio_WritePort(Dio_PortType PortId, Dio_PortLevelType Level)
 			break;
 		}
 	}
-	
+*/
+
+	switch(PortId){
+		
+		case 0:{
+			*((volatile u32*)(GPIO_PORTA_GPIODATA_ADDRESS)) = Level;
+			// Write to data register
+			break;
+		} 
+		case 1:{
+			*((volatile u32*)(GPIO_PORTB_GPIODATA_ADDRESS)) = Level;
+			break;
+		}
+		case 2:{
+			*((volatile u32*)(GPIO_PORTC_GPIODATA_ADDRESS)) = Level;
+			break;
+		}
+		case 3:{
+			*((volatile u32*)(GPIO_PORTD_GPIODATA_ADDRESS)) = Level;
+			break;
+		}
+		case 4:{
+			*((volatile u32*)(GPIO_PORTE_GPIODATA_ADDRESS)) = Level;
+			break;
+		}
+		case 5:{
+			*((volatile u32*)(GPIO_PORTF_GPIODATA_ADDRESS)) = Level;
+			break;
+		}
+	}	
 }
 /**********************************************************************************************************************
  *  END OF FILE: GPIO.c

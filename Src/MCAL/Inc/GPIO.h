@@ -116,7 +116,6 @@ Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId);
 
 void Dio_WritePort(Dio_PortType PortId, Dio_PortLevelType Level);
 
-//Dio_LevelType Dio_FlipChannel(Dio_ChannelType ChannelId);
  
 #endif  /* DIO_H */
 
