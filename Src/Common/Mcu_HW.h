@@ -19,6 +19,17 @@
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
+/* SysTick Registers */
+
+#define SYSTICK_BASE_ADDRESS 		 0xE000E000
+
+#define STCTRL_OFFSET			 0X010
+#define STRELOAD_OFFSET			 0X014
+#define STCURRENT_OFFSET		 0X018
+
+#define SYSTICK_STCTRL			 *((volatile u32*)(SYSTICK_BASE_ADDRESS  + STCTRL_OFFSET))
+#define SYSTICK_STRELOAD		 *((volatile u32*)(SYSTICK_BASE_ADDRESS  + STRELOAD_OFFSET))
+#define SYSTICK_STCURRENT		 *((volatile u32*)(SYSTICK_BASE_ADDRESS  + STCURRENT_OFFSET))
 
 /* NVIC Registers */
 
